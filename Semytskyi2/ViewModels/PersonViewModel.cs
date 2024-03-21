@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Semytskyi2.Exceptions;
 using Semytskyi2.Models;
 using Semytskyi2.Tools;
 
@@ -136,7 +137,7 @@ namespace Semytskyi2.ViewModels
                 IsEnable = false;
                 _person = await Task.Run(() => new Person(_name, _surname, _email, _dateOfBirth));
             }
-            catch (ArgumentException ex)
+            catch (ValidationException ex)
             {
                 _person = null;
                 MessageBox.Show(ex.Message);

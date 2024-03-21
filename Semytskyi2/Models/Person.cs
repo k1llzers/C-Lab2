@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using Semytskyi2.Exceptions;
 using Semytskyi2.Tools;
 
 namespace Semytskyi2.Models
@@ -15,15 +17,24 @@ namespace Semytskyi2.Models
         
         public Person(string name, string surname, string email, DateTime dateOfBirth)
         {
+            int age = DateUtil.CalculateAge(dateOfBirth);
+            if (age >= 130)
+            {
+                throw new SoPastDateOfBirthException("Age can`t be more then 130");
+            } 
+            if (age < 0)
+            {
+                throw new SoPastDateOfBirthException("You can`t create not birth user");
+            } 
+            Regex validateEmailRegex = new Regex("^\\S+@\\S+\\.\\S+$");
+            if(!validateEmailRegex.IsMatch(email))
+            {
+                throw new EmailValidationException("Incorrect email");
+            }
             _name = name;
             _surname = surname;
             _email = email;
             _dateOfBirth = dateOfBirth;
-            int age = DateUtil.CalculateAge(_dateOfBirth);
-            if (age < 0 || age >= 130)
-            {
-                throw new ArgumentException("Incorrect age");
-            }
             _isAdult = DateUtil.CheckAdult(dateOfBirth);
             _isBirthday = DateUtil.CheckBirthday(dateOfBirth);
             _zodiacSign = DateUtil.GetZodiac(dateOfBirth);
