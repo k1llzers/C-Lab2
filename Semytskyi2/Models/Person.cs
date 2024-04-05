@@ -17,20 +17,6 @@ namespace Semytskyi2.Models
         
         public Person(string name, string surname, string email, DateTime dateOfBirth)
         {
-            int age = DateUtil.CalculateAge(dateOfBirth);
-            if (age >= 130)
-            {
-                throw new SoPastDateOfBirthException("Age can`t be more then 130");
-            } 
-            if (age < 0)
-            {
-                throw new SoPastDateOfBirthException("You can`t create not birth user");
-            } 
-            Regex validateEmailRegex = new Regex("^\\S+@\\S+\\.\\S+$");
-            if(!validateEmailRegex.IsMatch(email))
-            {
-                throw new EmailValidationException("Incorrect email");
-            }
             _name = name;
             _surname = surname;
             _email = email;
@@ -39,7 +25,6 @@ namespace Semytskyi2.Models
             _isBirthday = DateUtil.CheckBirthday(dateOfBirth);
             _zodiacSign = DateUtil.GetZodiac(dateOfBirth);
             _chineseZodiacSign = DateUtil.GetChineseZodiac(dateOfBirth);
-            Thread.Sleep(3000);
         }
 
         public Person(string name, string surname, DateTime dateOfBirth): this(name, surname, string.Empty, dateOfBirth)

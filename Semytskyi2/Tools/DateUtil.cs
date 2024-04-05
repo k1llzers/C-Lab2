@@ -75,7 +75,8 @@ namespace Semytskyi2.Tools
         Sagittarius,
         Capricorn,
         Aquarius,
-        Pisces
+        Pisces,
+        All
     }
 
     public enum ChineseZodiacEnum
@@ -91,6 +92,7 @@ namespace Semytskyi2.Tools
         Dragon = 8,
         Snake = 9,
         Horse = 10,
-        Goat = 11
+        Goat = 11,
+        All = 12,
     }
 }

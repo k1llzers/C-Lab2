@@ -4,18 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Semytskyi2.Tools.Controls"
+             xmlns:tools="clr-namespace:Semytskyi2.Tools"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              IsEnabled="{Binding IsEnable, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1135">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="0.45*"></RowDefinition>
+            <RowDefinition Height="0.6*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -28,13 +34,114 @@
         <controls:TextBoxWithCaption Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Caption="Email" Text="{Binding Email, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"></controls:TextBoxWithCaption>
         <controls:DatePickerWithCaption Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Caption="Date of birth" SelectedDate="{Binding DateOfBirth, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"></controls:DatePickerWithCaption>
         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Width="400" Height="40" Content="Proceed" Foreground="Green" FontSize="20" Background="#FFCFF336" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact" BorderThickness="0,0,0,0" Command="{Binding ProceedCommand}"></Button>
-        <controls:TextBlockWithCaption Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Caption="Name:" Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Caption="Surname:" Text="{Binding Surname, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Caption="Email:" Text="{Binding Email, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Caption="Date of birth:" Text="{Binding DateOfBirth, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=dd MMMM yyyy}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Caption="Is adult:" Text="{Binding IsAdult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Caption="Is birthday:" Text="{Binding IsBirthday, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Caption="Zodiac:" Text="{Binding Zodiac, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
-        <controls:TextBlockWithCaption Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Caption="Chinese zodiac:" Text="{Binding ChineseZodiac, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBlockWithCaption>
+        <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Grid.RowSpan="8" HorizontalAlignment="Stretch" ItemsSource="{Binding Persons, Mode=OneWay}" SelectedItem="{Binding SelectedPerson}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Surnam" Binding="{Binding Surname}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn Header="Birth date" Binding="{Binding DateOfBirth}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Is adult" Binding="{Binding IsAdult}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Is birthday" Binding="{Binding IsBirthday}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Zodiac" Binding="{Binding Zodiac}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Chinese zodiac" Binding="{Binding ChineseZodiac}" />
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Update">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Update" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.UpdateCommand}" CommandParameter="{Binding}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!-- Start Filters -->
+        
+        <TextBlock Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,2" Text="Filters" FontSize="20" Foreground="Black"/>
+        <controls:TextBoxWithCaption Grid.Row="3" Grid.Column="3" Caption="Name" Text="{Binding FilterName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBoxWithCaption>
+        <controls:TextBoxWithCaption Grid.Row="4" Grid.Column="3" Caption="Surname" Text="{Binding FilterSurname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBoxWithCaption>
+        <controls:TextBoxWithCaption Grid.Row="5" Grid.Column="3" Caption="Email" Text="{Binding FilterEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></controls:TextBoxWithCaption>
+        <Grid Grid.Row="6" Grid.Column="3" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,2" Text="Date of Birth" FontSize="15" Foreground="Gray"/>
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,2" Text="From" FontSize="15" Foreground="Gray"></TextBlock>
+                <DatePicker Grid.Row="1" Grid.Column="0" FontSize="15" Width="130" Height="30" SelectedDate="{Binding FilterFromDateOfBirth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DatePicker>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,2" Text="To" FontSize="15" Foreground="Gray"></TextBlock>
+                <DatePicker Grid.Row="1" Grid.Column="0" FontSize="15" Width="130" Height="30" SelectedDate="{Binding FilterToDateOfBirth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DatePicker>
+            </Grid>
+
+        </Grid>
+        <Grid Grid.Row="7" Grid.Column="3" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Is adult" Margin="15">
+                <StackPanel>
+                    <RadioButton Content="Is adult" IsChecked="{Binding FilterIsAdult}" Margin="3"/>
+                    <RadioButton Content="Isn't adult" IsChecked="{Binding FilterIsNotAdult}" Margin="3"/>
+                    <RadioButton Content="Both" IsChecked="{Binding FilterIsAdultBoth}" Margin="3"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Is birthday" Margin="15">
+                <StackPanel>
+                    <RadioButton Content="Is birthday" IsChecked="{Binding FilterIsBirthday}" Margin="3"/>
+                    <RadioButton Content="Isn't birthday" IsChecked="{Binding FilterIsNotBirthday}" Margin="3"/>
+                    <RadioButton Content="Both" IsChecked="{Binding FilterIsBirthdayBoth}" Margin="3"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        <ComboBox Grid.Row="8" Grid.Column="3" SelectedItem="{Binding FilterZodiacSighn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <tools:ZodiacEnum>All</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Aries</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Taurus</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Gemini</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Cancer</tools:ZodiacEnum>        
+            <tools:ZodiacEnum>Scorpio</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Sagittarius</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Capricorn</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Aquarius</tools:ZodiacEnum>
+            <tools:ZodiacEnum>Pisces</tools:ZodiacEnum>
+        </ComboBox>
+        <ComboBox Grid.Row="9" Grid.Column="3" SelectedItem="{Binding FilterChineseZodiacSighn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <tools:ChineseZodiacEnum>All</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Monkey</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Rooster</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Dog</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Pig</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Rat</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Ox</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Tiger</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Rabbit</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Dragon</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Snake</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Horse</tools:ChineseZodiacEnum>
+            <tools:ChineseZodiacEnum>Goat</tools:ChineseZodiacEnum>
+        </ComboBox>
+        <Button Grid.Row="10" Grid.Column="3" Width="400" Height="40" Content="Filter" Foreground="Green" FontSize="20" Background="#AFBAF356" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact" BorderThickness="0,0,0,0" Command="{Binding FilterCommand}"></Button>
     </Grid>
 </UserControl>
