@@ -34,12 +34,12 @@
         <controls:TextBoxWithCaption Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Caption="Email" Text="{Binding Email, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"></controls:TextBoxWithCaption>
         <controls:DatePickerWithCaption Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Caption="Date of birth" SelectedDate="{Binding DateOfBirth, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"></controls:DatePickerWithCaption>
         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Width="400" Height="40" Content="Proceed" Foreground="Green" FontSize="20" Background="#FFCFF336" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact" BorderThickness="0,0,0,0" Command="{Binding ProceedCommand}"></Button>
-        <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Grid.RowSpan="8" HorizontalAlignment="Stretch" ItemsSource="{Binding Persons, Mode=OneWay}" SelectedItem="{Binding SelectedPerson}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  Grid.RowSpan="8" HorizontalAlignment="Left" ItemsSource="{Binding Persons, Mode=OneWay}" SelectedItem="{Binding SelectedPerson}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Surnam" Binding="{Binding Surname}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Email" Binding="{Binding Email}" />
-                <DataGridTextColumn Header="Birth date" Binding="{Binding DateOfBirth}" />
+                <DataGridTextColumn Header="Birth date" Binding="{Binding DateOfBirth,  StringFormat=dd MMMM yyyy}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Is adult" Binding="{Binding IsAdult}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Is birthday" Binding="{Binding IsBirthday}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Zodiac" Binding="{Binding Zodiac}" />
